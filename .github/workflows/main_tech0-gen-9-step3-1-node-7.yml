@@ -28,6 +28,7 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
+        working-directory: ./src/app # 3
 
       #1
       - name: Copy artifact for deployment job
@@ -35,15 +36,17 @@ jobs:
           mkdir deploy
           cp -r ./.next/standalone/. ./deploy
           cp -r ./.next/static/. ./deploy/.next/static
+        working-directory: ./src/app #3
 
       - name: Zip artifact for deployment
         run: zip release.zip ./deploy -r #2
+        working-directory: ./src/app #3
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: release.zip
+          path: ./src/app/release.zip #3 release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -67,5 +70,5 @@ jobs:
         with:
           app-name: 'tech0-gen-9-step3-1-node-7'
           slot-name: 'Production'
-          package: ./src
+          package: ./src/app #3
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EBF3CAD85BAB408BAB8E7708E2133803 }}
