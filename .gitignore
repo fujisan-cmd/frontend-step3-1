@@ -1,0 +1,5 @@
+# 環境変数を記載したファイル
+*.env
+
+# node_modulesはpackage.jsonがあればいいので不要
+frontend/node_modules/
